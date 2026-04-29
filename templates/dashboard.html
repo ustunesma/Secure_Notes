@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Secure Notes Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container wide">
+    <h2>Secure Notes Dashboard</h2>
+
+    <p>Welcome, <strong>{{ current_user.username }}</strong></p>
+    <p>Your role: <strong>{{ current_user.role }}</strong></p>
+
+    <a href="{{ url_for('logout') }}">Logout</a>
+
+    {% if current_user.role == "admin" %}
+        |
+        <a href="{{ url_for('admin') }}">Admin Panel</a>
+    {% endif %}
+
+    <hr>
+
+    <h3>Add a Sensitive Note</h3>
+
+    <form method="POST">
+        <textarea name="note" placeholder="Write your sensitive note here..." required></textarea>
+        <button type="submit">Save Encrypted Note</button>
+    </form>
+
+    <h3>Your Notes</h3>
+
+    {% for note in notes %}
+        <div class="note-box">
+            <h4>Decrypted Note:</h4>
+            <p>{{ note.content }}</p>
+
+            <h4>Encrypted Version Stored in Database:</h4>
+            <p class="encrypted">{{ note.encrypted }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>
